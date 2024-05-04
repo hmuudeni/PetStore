@@ -6,19 +6,27 @@ public class Program
 {
 	public static async Task Main(string[] args)
 	{
-		var serviceProvider = new PetServiceProvider();
-
-		var PetService = serviceProvider.GetPetService();
-
-		var listOfPets = await PetService.GetAvailablePetsAsync(PetStatusEnum.available.ToString());
-
-		if (listOfPets.Count != 0)
+		try
 		{
-			PetHelper.PrintGroupAndSortPets(listOfPets);
+			var serviceProvider = new PetServiceProvider();
+
+			var PetService = serviceProvider.GetPetService();
+
+			var listOfPets = await PetService.GetAvailablePetsAsync(PetStatusEnum.available.ToString());
+
+			if (listOfPets.Count != 0)
+			{
+				PetHelper.PrintGroupAndSortPets(listOfPets);
+			}
+			else
+			{
+				Console.WriteLine("No available pets.");
+			}
 		}
-		else
+		catch(Exception ex)
 		{
-			Console.WriteLine("No available pets.");
+			Console.WriteLine(ex.ToString());
 		}
+		
 	}
 }

@@ -14,16 +14,24 @@ namespace PetStore.App.Helper
 			// Order pets by category name 
 
 			var sortedPets = pets
-				.OrderBy(pet => pet.Category?.Name ?? "Unknown")
-				.ThenByDescending(p => p.Name);
+			.Where(p => p.Category != null && p.Category?.Name != null)
+			.Select(p =>  new
+			{
+				p.Name,
+				CatergoryName = p.Category.Name
+			})
+			.OrderBy(p => p.CatergoryName, StringComparer.OrdinalIgnoreCase)
+			.ThenByDescending(p => p.Name);
+
+			var sortedResults = sortedPets.ToList();
 
 			// Output to console
 			Console.WriteLine("Available pets sorted by category and displayed in reverse order by name:");
 			Console.WriteLine("---------------------------------------------------------------------------");
-			foreach (var pet in sortedPets)
+
+			foreach (var pet in sortedResults)
 			{
-				string categoryName = pet.Category?.Name ?? "No Category";
-				Console.WriteLine($"Category: {categoryName}, Pet Name: {pet.Name}");
+				Console.WriteLine($"Name: {pet.Name}, Category: {pet.CatergoryName}");
 			}
 
 		}

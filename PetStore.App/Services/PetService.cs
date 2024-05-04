@@ -26,21 +26,36 @@ namespace PetStore.App.Services
 			HttpResponseMessage response;
 			List<Pet> result = new List<Pet>();
 
-			response = await httpClient.GetAsync($"pet/findByStatus?status={Uri.EscapeDataString(findByStatus)}");
-
-			response.EnsureSuccessStatusCode();
-
-			var content = await response.Content.ReadAsStringAsync();
-
-			if (string.IsNullOrEmpty(content))
+			try
 			{
-				Console.WriteLine("Response content is empty or null");
-				return result;
+				response = await httpClient.GetAsync($"pet/findByStatus?status={Uri.EscapeDataString(findByStatus)}");
+
+				response.EnsureSuccessStatusCode();
+
+				var content = await response.Content.ReadAsStringAsync();
+
+				if (string.IsNullOrEmpty(content))
+				{
+					Console.WriteLine("Response content is empty or null");
+					return result;
+				}
+
+				return JsonConvert.DeserializeObject<List<Pet>>(content);
 			}
-
-			return JsonConvert.DeserializeObject<List<Pet>>(content);
-
-
+			catch(HttpRequestException ex)
+			{
+				Console.WriteLine($"HTTP request failed: {ex.Message}");
+			}
+			catch(JsonException ex)
+			{
+				Console.WriteLine($"Deserialization failed: {ex.Message}");
+			}
+			catch(Exception ex) 
+			{
+				Console.WriteLine($"An error occurred: {ex.Message}");
+			}
+			return result;
+			
 		}
 	}
 }
