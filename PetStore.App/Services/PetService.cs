@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using PetStore.App.Models;
 using PetStore.App.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,9 +21,26 @@ namespace PetStore.App.Services
 			baseUrl= options.Value.BaseUrl;
 			httpClient.BaseAddress = new Uri(baseUrl);
         }
-        public Task<List<Pet>> GetAvailablePetsAsync(string findByStatus)
+        public async Task<List<Pet>> GetAvailablePetsAsync(string findByStatus)
 		{
-			throw new NotImplementedException();
+			HttpResponseMessage response;
+			List<Pet> result = new List<Pet>();
+
+			response = await httpClient.GetAsync($"pet/findByStatus?status={Uri.EscapeDataString(findByStatus)}");
+
+			response.EnsureSuccessStatusCode();
+
+			var content = await response.Content.ReadAsStringAsync();
+
+			if (string.IsNullOrEmpty(content))
+			{
+				Console.WriteLine("Response content is empty or null");
+				return result;
+			}
+
+			return JsonConvert.DeserializeObject<List<Pet>>(content);
+
+
 		}
 	}
 }
