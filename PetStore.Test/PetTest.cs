@@ -1,10 +1,10 @@
 namespace PetStore.Test
 {
 	[TestClass]
-	public class UnitTest1
+	public class PetTest
 	{
 		[TestMethod]
-		public void TestMethod1()
+		public async Task ShouldFindPetsByStatus()
 		{
 		}
 	}
