@@ -11,6 +11,13 @@ namespace PetStore.App.Helper
 	{
 		public static void PrintGroupAndSortPets(List<Pet> pets)
 		{
+			// Order pets by category name 
+
+			var sortedPets = pets
+				.OrderBy(pet => pet.Category?.Name ?? "Unknown")
+				.ThenByDescending(p => p.Name);
+
+			
 		}
 	}
 }
