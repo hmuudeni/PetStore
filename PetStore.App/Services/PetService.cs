@@ -1,4 +1,6 @@
-﻿using PetStore.App.Models;
+﻿using Microsoft.Extensions.Options;
+using PetStore.App.Models;
+using PetStore.App.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,15 @@ namespace PetStore.App.Services
 {
 	public class PetService : IPetService
 	{
-		public Task<List<Pet>> GetAvailablePetsAsync(string findByStatus)
+		private readonly HttpClient httpClient;
+		private string baseUrl = string.Empty;
+        public PetService(HttpClient client, IOptions<ApiAccessor> options)
+        {
+            httpClient = client;
+			baseUrl= options.Value.BaseUrl;
+			httpClient.BaseAddress = new Uri(baseUrl);
+        }
+        public Task<List<Pet>> GetAvailablePetsAsync(string findByStatus)
 		{
 			throw new NotImplementedException();
 		}
