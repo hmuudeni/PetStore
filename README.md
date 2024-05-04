@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-PetStore.App is a console .NET application designed for users to view a list of available pets in various categories, sorted in reverse order by name.
+PetStore is a console .NET application designed for users to view a list of available pets in various categories, sorted in reverse order by name.
 
 ## Table of Contents
 - [Features](#features)
