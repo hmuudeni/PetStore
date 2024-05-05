@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using PetStore.App.Models;
 using PetStore.App.Utility;
+using System.Net;
 
 namespace PetStore.App.Services
 {
@@ -25,17 +26,25 @@ namespace PetStore.App.Services
 								
 				response = await httpClient.GetAsync(AppSetting.GetPetFindByStatus(findByStatus));
 
-				response.EnsureSuccessStatusCode();
-
-				var content = await response.Content.ReadAsStringAsync();
-
-				if (string.IsNullOrEmpty(content))
+				if (response.IsSuccessStatusCode)
 				{
-					Console.WriteLine("Response content is empty or null");
+					var content = await response.Content.ReadAsStringAsync();
+
+					if (string.IsNullOrEmpty(content))
+					{
+						Console.WriteLine("Response content is empty or null");
+						return result;
+					}
+
+					result =  JsonConvert.DeserializeObject<List<Pet>>(content);
 					return result;
 				}
+				else if (response.StatusCode == HttpStatusCode.BadRequest)
+				{
+					Console.WriteLine($"Invalid status code: {response.StatusCode}");
+					return result; 
+				}
 
-				return JsonConvert.DeserializeObject<List<Pet>>(content);
 			}
 			catch(HttpRequestException ex)
 			{
