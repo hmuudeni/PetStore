@@ -28,7 +28,8 @@ namespace PetStore.App.Services
 
 			try
 			{
-				response = await httpClient.GetAsync($"pet/findByStatus?status={Uri.EscapeDataString(findByStatus)}");
+								
+				response = await httpClient.GetAsync(AppSetting.GetPetFindByStatus(findByStatus));
 
 				response.EnsureSuccessStatusCode();
 
