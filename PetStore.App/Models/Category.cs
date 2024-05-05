@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PetStore.App.Models
+﻿namespace PetStore.App.Models
 {
 	public class Category
 	{
