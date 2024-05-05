@@ -38,7 +38,7 @@ Ensure you have the following installed in your development environment:
    dotnet build
    dotnet run
 
-### Further Steps
+## Further Steps
 
 #### Improve the Project Layout
 
